@@ -132,9 +132,9 @@ gps_simp_clean_dt[, c('EASTING', 'NORTHING') := as.data.table(project(cbind(long
 plot(gps_simp_clean_dt$EASTING, gps_simp_clean_dt$NORTHING,
      xaxt='n', yaxt='n', ann=FALSE)
 
-# Generate some sort of boundaries if you see obviously erroneous points in plot above
-lowEast <- 600000; highEast <- 640000
-lowNorth <- 6000000; highNorth <- 6300000
+# Generate some sort of boundaries if you see obviously erroneous points in plot above - values below are just random, boundaries depend on individual datasets
+lowEast <- 100; highEast <- 100
+lowNorth <- 4000; highNorth <- 5000
 
 # Filter by bounds - This will again depend on your study extent but will help
 # get rid of those random points off in space
@@ -152,7 +152,7 @@ plot(gps_simp_clean_dt$EASTING, gps_simp_clean_dt$NORTHING,
 ``` {r Calculate number of GPS fixes per individual, message = FALSE, echo = TRUE, warning = FALSE, eval = TRUE}
 
 #Produces tibble with animal ID and number of fixes
-#Animalid is unique ID identifying individual MG
+#Animalid is unique ID identifying individual animal
 fixes_per_ind <- group_by(gps_simp_clean_dt) %>%
   group_by(AnimalID) %>%
   summarise(number_of_fixes = n())
@@ -204,7 +204,7 @@ gps_simp_clean_dt[, (dif.time.col) := as.numeric(get(time.col) - get(lag.time.co
 # Simple step length divided by time difference - something here is generating infinites
 gps_simp_clean_dt[, moveRate := simpleStep / (get(dif.time.col))]
 
-# Output pdf of locs xy by herd BEFORE movement rate cutoff and flag the locs----
+# Output pdf of locs xy BEFORE movement rate cutoff and flag the locs----
 # where moverate is higher than 15 km/h. If you simply want to view the plots
 # and not save them you can just run the lines in between pdf and dev.off()
 
@@ -234,29 +234,29 @@ gps_simp_clean2_dt <- gps_simp_clean_dt%>%
 ``` {r Seasonal data prepration, message = FALSE, echo = TRUE, warning = FALSE, eval = TRUE}
 
 
-mogo_winter2018 <- gps_simp_clean2_dt %>%
+winter2018 <- gps_simp_clean2_dt %>%
   filter(LMT_Date >= as.Date("2017-12-01") & LMT_Date <= as.Date("2018-04-30"))
 
-mogo_winter2019 <- gps_simp_clean2_dt %>%
+winter2019 <- gps_simp_clean2_dt %>%
   filter(LMT_Date >= as.Date("2018-12-01") & LMT_Date <= as.Date("2019-04-30"))
 
-mogo_winter2020<- gps_simp_clean2_dt %>%
+winter2020<- gps_simp_clean2_dt %>%
   filter (LMT_Date >=as.Date("2019-12-01") & LMT_Date <= as.Date("2020-04-30"))
 
-mogo_winter <- rbind(mogo_winter2018, mogo_winter2019, mogo_winter2020)
-#write.csv(mogo_winter, "output/winterGPS.csv")
+winter <- rbind(winter2018, winter2019, winter2020)
+#write.csv(winter, "output/winterGPS.csv")
 
 
 #### Setting up seasonal data sets - SUMMER 
-mogo_summer2018 <- gps_simp_clean2_dt %>%
+summer2018 <- gps_simp_clean2_dt %>%
   filter(LMT_Date >= as.Date("2018-05-01") & LMT_Date <= as.Date("2018-10-31"))
 
-mogo_summer2019 <- gps_simp_clean2_dt %>%
+summer2019 <- gps_simp_clean2_dt %>%
   filter(LMT_Date >= as.Date("2019-05-01") & LMT_Date <= as.Date("2019-10-31"))
 
-mogo_summer2020 <- gps_simp_clean2_dt%>%
+summer2020 <- gps_simp_clean2_dt%>%
   filter (LMT_Date >=as.Date("2020-05-01") & LMT_Date <= as.Date("2020-10-31"))
 
-mogo_summer <- rbind(mogo_summer2018, mogo_summer2019, mogo_summer2020)
-#write.csv(mogo_winter, "output/summerGPS.csv")
+summer <- rbind(summer2018, summer2019, summer2020)
+#write.csv(summer, "output/summerGPS.csv")
 ```
