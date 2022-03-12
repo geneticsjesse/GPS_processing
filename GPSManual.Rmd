@@ -228,7 +228,7 @@ gps_simp_clean2_dt <- gps_simp_clean_dt%>%
 # Export it 
 #write.csv(gps_simp_clean2_dt, 'output/gps_FilteredCleaned.csv')
 ```
-## Seasonal data preparation - these dates correspond to my mountain goat data, will change depending on study system
+## Seasonal data preparation - these dates correspond to my data, will change depending on study system
 ### Setting up seasonal data sets 
 
 ``` {r Seasonal data prepration, message = FALSE, echo = TRUE, warning = FALSE, eval = TRUE}
